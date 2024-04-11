@@ -2,9 +2,19 @@ import styled from "styled-components";
 import NavBar from "./components/NavBar";
 import SideBar from "./components/SideBar";
 import { ReactNode, useState } from "react";
-import { UniswapEasy, defaultTheme, orangeDark, Colors } from "uniswapeasy";
+import {
+  UniswapEasy,
+  defaultTheme,
+  orangeDark,
+  Colors,
+  orangeLight,
+  tealDark,
+  tealLight,
+} from "uniswapeasy";
 import { poolKeys, hookInfos, currencyIconMap } from "./constants";
 import { useActiveProvider } from "./connectors";
+import Modal from "./components/Modal";
+import { CopyBlock, dracula } from "react-code-blocks";
 
 const AppContainer = styled.div`
   display: flex;
@@ -87,19 +97,81 @@ const WidgetWrapper = styled.div`
   }
 `;
 
+export type OriginalName =
+  | "orangeDark"
+  | "orangeLight"
+  | "tealDark"
+  | "tealLight";
+
 function App() {
   const [isOpen, setIsOpen] = useState(true);
   const provider = useActiveProvider();
 
   const [themeColors, setThemeColors] = useState<Colors>(orangeDark);
+  const [initialTheme, setInitialTheme] = useState<OriginalName>("orangeDark");
+  const [isCodeBlockOpen, setIsCodeBlockOpen] = useState(false);
+  const themes: { name: string; theme: Colors; originalName: OriginalName }[] =
+    [
+      { name: "Orange Dark", theme: orangeDark, originalName: "orangeDark" },
+      { name: "Orange Light", theme: orangeLight, originalName: "orangeLight" },
+      { name: "Teal Dark", theme: tealDark, originalName: "tealDark" },
+      { name: "Teal Light", theme: tealLight, originalName: "tealLight" },
+    ];
+  const handleSetInitialTheme = (theme: Colors, originalName: OriginalName) => {
+    setInitialTheme(originalName);
+    setThemeColors(theme);
+  };
 
   return (
     <AppContainer>
+      <Modal
+        isOpen={isCodeBlockOpen}
+        onClose={() => setIsCodeBlockOpen(false)}
+        breakpoints={[
+          { breakpoint: "768px", width: "80%" },
+          { breakpoint: "1024px", width: "60%" },
+        ]}
+      >
+        <CopyBlock
+          text={`
+            import { UniswapEasy, defaultTheme, type Colors } from "uniswapeasy";
+            import {poolKeys, hookInfos, currencyIconMap} from "./constants"; // Replace this with your own constants
+            import {useActiveProvider} from "./connectors"; // Replace this with your own provider hook
+
+            export default function App() {
+              const myColors : Colors = ${JSON.stringify(themeColors, null, 2)
+                .split("\n")
+                .map((line, index) =>
+                  index === 0 ? line : `               ${line}`
+                )
+                .join("\n")};
+              const provider = useActiveProvider(); // Replace this with your own provider hook
+              return (
+                <UniswapEasy
+                  theme={{
+                    ...defaultTheme,
+                    ...myColors,
+                  }}
+                  provider={provider}
+                  poolInfos={poolKeys}
+                  hookInfos={hookInfos}
+                  currencyIconMap={currencyIconMap}
+                />
+              );
+
+            `}
+          language="tsx"
+          theme={dracula}
+        />
+      </Modal>
       <NavBar />
       <AppBody>
         <SideBar
           isOpen={isOpen}
+          openCodeBlock={() => setIsCodeBlockOpen(true)}
           theme={themeColors}
+          themeList={themes}
+          setInitialTheme={handleSetInitialTheme}
           setTheme={setThemeColors}
         />
         <WidgetContainer>

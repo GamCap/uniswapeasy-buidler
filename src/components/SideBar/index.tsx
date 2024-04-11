@@ -1,27 +1,42 @@
 import { ReactNode, useCallback, useRef, useState } from "react";
 import { HexColorPicker, HexColorInput } from "react-colorful";
 import styled from "styled-components";
-import { Colors } from "uniswapeasy";
+import {
+  Colors,
+  tealDark,
+  orangeDark,
+  tealLight,
+  orangeLight,
+} from "uniswapeasy";
 import useClickOutside from "./useClickOutside";
+import { OriginalName } from "../../App";
 
-//scrollbar styling
 const SideBarContainer = styled.div<{ $isOpen: boolean }>`
   display: flex;
   position: relative;
   flex-direction: column;
-  padding: ${({ $isOpen }) => ($isOpen ? "20px" : "20px 0px")};
+  gap: 16px;
+  padding: ${({ $isOpen }) =>
+    $isOpen ? "20px 0 20px 20px" : "20px 0 20px 0px"};
   box-sizing: border-box;
   align-items: start;
-  justify-content: flex-start;
+  justify-content: space-between;
   height: 100%;
   width: ${({ $isOpen }) => ($isOpen ? "300px" : "0px")};
   transition: width 0.3s ease-in-out, padding 0.3s ease-in-out;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: hidden;
   background-color: ${({ theme }) => theme.background};
   border-right: 1px solid ${({ theme }) => theme.lightBorder};
   color: ${({ theme }) => theme.primaryText};
-
+`;
+const ScrollableArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow: auto;
+  width: 100%;
+  gap: 16px;
+  padding-right: 20px;
   &::-webkit-scrollbar-button {
     display: none;
   }
@@ -44,8 +59,10 @@ const CollapsibleTitle = styled.button`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  padding: 4px 8px;
-  gap: 8px
+  padding: 0 0 8px 0;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 600;
   box-sizing: border-box;
   background-color: transparent;
   appearance: none;
@@ -62,25 +79,8 @@ const CollapsibleChild = styled.div`
   gap: 8px;
 `;
 
-interface CollapsibleSectionProps {
-  title: string;
-  children: ReactNode;
-}
-
-const CollapsibleSection = ({ title, children }: CollapsibleSectionProps) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-
-  return (
-    <div>
-      <CollapsibleTitle onClick={() => setIsOpen(!isOpen)}>
-        {title} {isOpen ? "-" : "+"}
-      </CollapsibleTitle>
-      {isOpen && <CollapsibleChild>{children}</CollapsibleChild>}
-    </div>
-  );
-};
-
 const TextInput = styled(HexColorInput)`
+  width: 100%;
   padding: 4px 8px;
   box-sizing: border-box;
   background: transparent;
@@ -90,6 +90,7 @@ const TextInput = styled(HexColorInput)`
 `;
 
 const ColorInput = styled.div<{ $bgColor?: string }>`
+  flex: 1 0 auto;
   width: 24px;
   height: 24px;
   border-radius: 50%;
@@ -112,6 +113,7 @@ const ColorInput = styled.div<{ $bgColor?: string }>`
 
 const InputWrapper = styled.div`
   display: flex;
+  box-sizing: border-box;
   position: relative;
   flex-direction: row;
   gap: 8px;
@@ -121,6 +123,7 @@ const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
+  font-size: 14px;
 `;
 
 const ThemeEditorContainer = styled.div`
@@ -128,6 +131,24 @@ const ThemeEditorContainer = styled.div`
   flex-direction: column;
   gap: 16px;
 `;
+
+interface CollapsibleSectionProps {
+  title: string;
+  children: ReactNode;
+}
+
+const CollapsibleSection = ({ title, children }: CollapsibleSectionProps) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  return (
+    <div>
+      <CollapsibleTitle onClick={() => setIsOpen(!isOpen)}>
+        {title} {isOpen ? "-" : "+"}
+      </CollapsibleTitle>
+      {isOpen && <CollapsibleChild>{children}</CollapsibleChild>}
+    </div>
+  );
+};
 
 const ColorInputDeferred = ({
   color,
@@ -208,18 +229,119 @@ const ThemeEditor = ({
   );
 };
 
+const StyledSelect = styled.select`
+  padding: 4px 8px;
+  box-sizing: border-box;
+  background: transparent;
+  border: 1px solid ${({ theme }) => theme.lightBorder};
+  color: ${({ theme }) => theme.primaryText};
+  border-radius: 4px;
+
+  &:focus {
+    outline: none;
+  }
+  option {
+    background: ${({ theme }) => theme.background};
+    color: ${({ theme }) => theme.primaryText};
+  }
+`;
+const ThemeSelector = ({
+  theme,
+  themeList,
+  setTheme,
+}: {
+  theme: Colors;
+  themeList: { name: string; theme: Colors; originalName: OriginalName }[];
+  setTheme: (theme: Colors, originalName: OriginalName) => void;
+}) => {
+  const handleThemeChange = (newTheme: Colors, originalName: OriginalName) => {
+    setTheme(newTheme, originalName);
+  };
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "8px",
+      }}
+    >
+      <label
+        style={{
+          fontSize: "16px",
+          fontWeight: 600,
+        }}
+      >
+        Initial Theme
+      </label>
+      <StyledSelect
+        onChange={(e) =>
+          handleThemeChange(
+            themeList[parseInt(e.target.value)].theme,
+            themeList[parseInt(e.target.value)].originalName
+          )
+        }
+      >
+        {themeList.map((t, i) => (
+          <option key={i} value={i}>
+            {t.name}
+          </option>
+        ))}
+      </StyledSelect>
+    </div>
+  );
+};
+
 const SideBar = ({
   isOpen,
+  openCodeBlock,
+  themeList,
+  setInitialTheme,
   theme,
   setTheme,
 }: {
   isOpen: boolean;
+  openCodeBlock: () => void;
+  themeList: { name: string; theme: Colors; originalName: OriginalName }[];
+  setInitialTheme: (theme: Colors, originalName: OriginalName) => void;
   theme: Colors;
   setTheme: (theme: Colors) => void;
 }) => {
   return (
     <SideBarContainer $isOpen={isOpen}>
-      <ThemeEditor theme={theme} setTheme={setTheme} />
+      <ScrollableArea>
+        <ThemeSelector
+          theme={theme}
+          themeList={themeList}
+          setTheme={setInitialTheme}
+        />
+        <ThemeEditor theme={theme} setTheme={setTheme} />
+      </ScrollableArea>
+      <div
+        style={{
+          display: "flex",
+          boxSizing: "border-box",
+          width: "100%",
+          alignItems: "center",
+          justifyContent: "center",
+          paddingRight: "20px",
+        }}
+      >
+        <button
+          style={{
+            padding: "8px 16px",
+            borderRadius: "8px",
+            background: "transparent",
+            border: "1px solid",
+            borderColor: "var(--color-primary)",
+            color: "var(--color-primary)",
+            cursor: "pointer",
+          }}
+          onClick={openCodeBlock}
+        >
+          Open Code Block
+        </button>
+      </div>
     </SideBarContainer>
   );
 };
