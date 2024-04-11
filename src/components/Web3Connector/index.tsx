@@ -1,5 +1,20 @@
+import styled from "styled-components";
 import { connectors, getConnectorName, Web3Connector } from "../../connectors";
 import { useCallback } from "react";
+
+const ConnectorWrapper = styled.button`
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border: 1px solid ${({ theme }) => theme.lightBorder};
+  gap: 8px;
+  background: transparent;
+  color: ${({ theme }) => theme.primaryText};
+  border-radius: 12px;
+  font-size: 20px;
+`;
 
 function Connector({ web3Connector }: { web3Connector: Web3Connector }) {
   const [connector, hooks] = web3Connector;
@@ -14,30 +29,21 @@ function Connector({ web3Connector }: { web3Connector: Web3Connector }) {
   }, [connector, isActive]);
 
   return (
-    <div
-      style={{
-        padding: "0.5rem 1rem",
-        border: "1px solid #c3c5cb",
-        borderRadius: "10px",
-        display: "flex",
-        justifyContent: "flex-end",
-        gridAutoFlow: "column",
-        alignItems: "center",
-        columnGap: "1rem",
-        background: isActive ? "#e6f4ea" : "#f4f4f4",
-      }}
+    <ConnectorWrapper
+      onClick={onClick}
+      title={isActive ? "Disconnect" : "Connect"}
+      aria-label={isActive ? "Disconnect" : "Connect"}
     >
       <label>{getConnectorName(connector)}</label>
-      <button onClick={onClick}>{isActive ? "Disconnect" : "Connect"}</button>
       <svg
         style={
           isActive
             ? {
-                width: "1rem",
+                width: "16px",
                 fill: "green",
               }
             : {
-                width: "1rem",
+                width: "16px",
                 fill: "red",
               }
         }
@@ -45,7 +51,7 @@ function Connector({ web3Connector }: { web3Connector: Web3Connector }) {
       >
         <circle cx={1} cy={1} r={1} />
       </svg>
-    </div>
+    </ConnectorWrapper>
   );
 }
 
@@ -56,7 +62,6 @@ export default function Connectors() {
         display: "flex",
         flexDirection: "column",
         gap: "1rem",
-        margin: "1rem",
       }}
     >
       {connectors.map((web3Connector, index) => (

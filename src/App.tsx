@@ -44,11 +44,18 @@ const WidgetContainer = styled.div`
 
 const SideBarHandle = styled.button`
   position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   top: 50%;
   left: 0;
   width: 20px;
-  height: 20px;
-  background-color: red;
+  height: 40px;
+  background-color: transparent;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border: 1px solid ${({ theme }) => theme.lightBorder};
+  color: ${({ theme }) => theme.lightBorder};
 `;
 
 const WidgetWrapper = styled.div`
@@ -61,6 +68,23 @@ const WidgetWrapper = styled.div`
   box-sizing: border-box;
   overflow: auto;
   padding: 20px;
+
+  &::-webkit-scrollbar-button {
+    display: none;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: ${({ theme }) => theme.darkBorder};
+    border-radius: 32px;
+  }
+
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
 `;
 
 function App() {
@@ -79,7 +103,9 @@ function App() {
           setTheme={setThemeColors}
         />
         <WidgetContainer>
-          <SideBarHandle onClick={() => setIsOpen(!isOpen)} />
+          <SideBarHandle onClick={() => setIsOpen(!isOpen)}>
+            {isOpen ? "<" : ">"}
+          </SideBarHandle>
           <WidgetWrapper>
             <UniswapEasy
               theme={{
