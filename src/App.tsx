@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import NavBar from "./components/NavBar";
 import SideBar from "./components/SideBar";
-import { useState } from "react";
-import { UniswapEasy, defaultTheme, orangeDark } from "uniswapeasy";
+import { ReactNode, useState } from "react";
+import { UniswapEasy, defaultTheme, orangeDark, Colors } from "uniswapeasy";
 import { poolKeys, hookInfos, currencyIconMap } from "./constants";
 import { useActiveProvider } from "./connectors";
+
 const AppContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -65,18 +66,25 @@ const WidgetWrapper = styled.div`
 function App() {
   const [isOpen, setIsOpen] = useState(true);
   const provider = useActiveProvider();
+
+  const [themeColors, setThemeColors] = useState<Colors>(orangeDark);
+
   return (
     <AppContainer>
       <NavBar />
       <AppBody>
-        <SideBar isOpen={isOpen} />
+        <SideBar
+          isOpen={isOpen}
+          theme={themeColors}
+          setTheme={setThemeColors}
+        />
         <WidgetContainer>
           <SideBarHandle onClick={() => setIsOpen(!isOpen)} />
           <WidgetWrapper>
             <UniswapEasy
               theme={{
                 ...defaultTheme,
-                ...orangeDark,
+                ...themeColors,
               }}
               provider={provider}
               poolInfos={poolKeys}
