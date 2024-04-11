@@ -8,15 +8,25 @@ import {
 type ColorMode = "light" | "dark";
 
 const darkTheme = {
-  background: "#000",
-  border: "#333",
-  text: "#fff",
+  background: "#121212",
+  primaryText: "#E0E0E0",
+  secondaryText: "#BDBDBD",
+  accent: "#BB86FC",
+  lightBorder: "#292929",
+  darkBorder: "#1F1F1F",
+  hoverBackground: "#1E1E1E",
+  activeBackground: "#333333",
 };
 
 const lightTheme = {
-  background: "#fff",
-  border: "#ccc",
-  text: "#000",
+  background: "#F5F5F5",
+  primaryText: "#212121",
+  secondaryText: "#757575",
+  accent: "#6200EE",
+  lightBorder: "#E0E0E0",
+  darkBorder: "#BDBDBD",
+  hoverBackground: "#EDEDED",
+  activeBackground: "#E0E0E0",
 };
 
 type ThemeCtxType = {

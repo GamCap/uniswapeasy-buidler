@@ -7,15 +7,34 @@ const NavBarContainer = styled.div`
   width: 100%;
   justify-content: space-between;
   padding: 8px;
-  background-color: ${({ theme }) => theme.background};
-  border-bottom: 1px solid ${({ theme }) => theme.border};
+  box-sizing: border-box;
+  background-color: transparent;
+  border-bottom: 1px solid ${({ theme }) => theme.lightBorder};
+`;
+
+const LogoContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
+const Logo = styled.img`
+  width: 32px;
+  height: 32px;
 `;
 
 const NavBar: React.FC = () => {
   const { colorMode, setColorMode } = useTheme();
   return (
     <NavBarContainer>
-      <img src="/logo.png" alt="logo" />
+      <LogoContainer>
+        <Logo
+          src="https://avatars.githubusercontent.com/u/99751077?s=200&v=4"
+          alt="logo"
+        />
+        GamCap Labs
+      </LogoContainer>
+
       <Web3Connectors />
       <button
         onClick={() => setColorMode(colorMode === "dark" ? "light" : "dark")}
