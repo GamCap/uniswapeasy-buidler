@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { useTheme } from "../../theme";
 
 const NavBarContainer = styled.div`
+  z-index: 1;
+  box-shadow: ${({ theme }) => `0 10px 10px 0 ${theme.shadow}`};
   display: flex;
   width: 100%;
   justify-content: space-between;

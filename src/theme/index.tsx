@@ -16,6 +16,7 @@ const darkTheme = {
   darkBorder: "#1F1F1F",
   hoverBackground: "#1E1E1E",
   activeBackground: "#333333",
+  shadow: "#ffffff05",
 };
 
 const lightTheme = {
@@ -27,6 +28,7 @@ const lightTheme = {
   darkBorder: "#BDBDBD",
   hoverBackground: "#EDEDED",
   activeBackground: "#E0E0E0",
+  shadow: "#00000010",
 };
 
 type ThemeCtxType = {

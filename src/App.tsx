@@ -53,6 +53,8 @@ const WidgetContainer = styled.div`
 `;
 
 const SideBarHandle = styled.button`
+  z-index: 3;
+  box-shadow: ${({ theme }) => `0 0 10px 10px ${theme.shadow}`};
   position: absolute;
   display: flex;
   align-items: center;
@@ -61,11 +63,11 @@ const SideBarHandle = styled.button`
   left: 0;
   width: 20px;
   height: 40px;
-  background-color: transparent;
+  background-color: ${({ theme }) => theme.background};
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
   border: 1px solid ${({ theme }) => theme.lightBorder};
-  color: ${({ theme }) => theme.lightBorder};
+  color: ${({ theme }) => theme.secondaryText};
 `;
 
 const WidgetWrapper = styled.div`

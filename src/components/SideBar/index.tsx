@@ -11,7 +11,10 @@ import {
 import useClickOutside from "./useClickOutside";
 import { OriginalName } from "../../App";
 
+//shadow on right side of sidebar
 const SideBarContainer = styled.div<{ $isOpen: boolean }>`
+  white-space: nowrap;
+  z-index: 2;
   display: flex;
   position: relative;
   flex-direction: column;
@@ -22,21 +25,27 @@ const SideBarContainer = styled.div<{ $isOpen: boolean }>`
   align-items: start;
   justify-content: space-between;
   height: 100%;
+  box-shadow: ${({ $isOpen, theme }) =>
+    $isOpen ? `10px 0 10px 0 ${theme.shadow}` : "none"};
   width: ${({ $isOpen }) => ($isOpen ? "300px" : "0px")};
-  transition: width 0.3s ease-in-out, padding 0.3s ease-in-out;
+  transition: width 0.3s ease-in-out, padding 0.3s ease-in-out,
+    box-shadow 0.3s ease-in-out;
   overflow: hidden;
   background-color: ${({ theme }) => theme.background};
   border-right: 1px solid ${({ theme }) => theme.lightBorder};
   color: ${({ theme }) => theme.primaryText};
 `;
 const ScrollableArea = styled.div`
+  white-space: nowrap;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
   overflow: auto;
+  overflow-x: hidden;
   width: 100%;
   gap: 16px;
   padding-right: 20px;
+  scrollbar-gutter: stable;
   &::-webkit-scrollbar-button {
     display: none;
   }
