@@ -3,7 +3,7 @@ import { getPriorityConnector } from "@web3-react/core";
 import { Connector } from "@web3-react/types";
 import metaMask, { isMetaMask } from "./MetaMask";
 
-export type { Web3Connector } from "../utils";
+export type { Web3Connector } from "utils";
 
 export function getConnectorName(connector: Connector): string {
   if (isMetaMask(connector)) {
