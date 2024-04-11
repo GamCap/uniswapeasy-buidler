@@ -2,6 +2,9 @@ import styled from "styled-components";
 import NavBar from "./components/NavBar";
 import SideBar from "./components/SideBar";
 import { useState } from "react";
+import { UniswapEasy, defaultTheme, orangeDark } from "uniswapeasy";
+import { poolKeys, hookInfos, currencyIconMap } from "./constants";
+import { useActiveProvider } from "./connectors";
 const AppContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -16,6 +19,8 @@ const AppContainer = styled.div`
 const AppBody = styled.div`
   display: flex;
   flex-direction: row;
+  box-sizing: border-box;
+  overflow: hidden;
   align-items: center;
   justify-content: center;
   width: 100%;
@@ -28,8 +33,10 @@ const WidgetContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex: 1;
+  overflow: hidden;
   height: 100%;
+  box-sizing: border-box;
+  flex: 1;
   background-color: ${({ theme }) => theme.background};
   color: ${({ theme }) => theme.text};
 `;
@@ -43,8 +50,21 @@ const SideBarHandle = styled.button`
   background-color: red;
 `;
 
+const WidgetWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  max-height: 100%;
+  box-sizing: border-box;
+  overflow: auto;
+  padding: 20px;
+`;
+
 function App() {
   const [isOpen, setIsOpen] = useState(true);
+  const provider = useActiveProvider();
   return (
     <AppContainer>
       <NavBar />
@@ -52,8 +72,18 @@ function App() {
         <SideBar isOpen={isOpen} />
         <WidgetContainer>
           <SideBarHandle onClick={() => setIsOpen(!isOpen)} />
-          <h1>Widget 1</h1>
-          <h1>Widget 2</h1>
+          <WidgetWrapper>
+            <UniswapEasy
+              theme={{
+                ...defaultTheme,
+                ...orangeDark,
+              }}
+              provider={provider}
+              poolInfos={poolKeys}
+              hookInfos={hookInfos}
+              currencyIconMap={currencyIconMap}
+            />
+          </WidgetWrapper>
         </WidgetContainer>
       </AppBody>
     </AppContainer>
