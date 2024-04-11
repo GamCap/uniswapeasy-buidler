@@ -1,6 +1,8 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useCallback, useRef, useState } from "react";
+import { HexColorPicker, HexColorInput } from "react-colorful";
 import styled from "styled-components";
 import { Colors } from "uniswapeasy";
+import useClickOutside from "./useClickOutside";
 
 //scrollbar styling
 const SideBarContainer = styled.div<{ $isOpen: boolean }>`
@@ -78,7 +80,7 @@ const CollapsibleSection = ({ title, children }: CollapsibleSectionProps) => {
   );
 };
 
-const TextInput = styled.input.attrs({ type: "text" })`
+const TextInput = styled(HexColorInput)`
   padding: 4px 8px;
   box-sizing: border-box;
   background: transparent;
@@ -87,7 +89,7 @@ const TextInput = styled.input.attrs({ type: "text" })`
   border-radius: 4px;
 `;
 
-const ColorInput = styled.input.attrs({ type: "color" })`
+const ColorInput = styled.div<{ $bgColor?: string }>`
   width: 24px;
   height: 24px;
   border-radius: 50%;
@@ -95,6 +97,7 @@ const ColorInput = styled.input.attrs({ type: "color" })`
   padding: 0;
   -webkit-appearance: none;
   cursor: pointer;
+  background-color: ${({ $bgColor }) => $bgColor};
 
   &::-webkit-color-swatch-wrapper {
     padding: 0;
@@ -109,6 +112,7 @@ const ColorInput = styled.input.attrs({ type: "color" })`
 
 const InputWrapper = styled.div`
   display: flex;
+  position: relative;
   flex-direction: row;
   gap: 8px;
 `;
@@ -124,6 +128,37 @@ const ThemeEditorContainer = styled.div`
   flex-direction: column;
   gap: 16px;
 `;
+
+const ColorInputDeferred = ({
+  color,
+  onChange,
+}: {
+  color: string;
+  onChange: (color: string) => void;
+}) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const popover = useRef<HTMLDivElement>(null);
+  const close = useCallback(() => setIsOpen(false), []);
+  useClickOutside(popover, close);
+  return (
+    <div style={{ display: "flex", flexDirection: "column" }}>
+      <InputWrapper>
+        <TextInput color={color} onChange={onChange} />
+        <ColorInput
+          $bgColor={color}
+          onClick={() => {
+            setIsOpen(true);
+          }}
+        />
+      </InputWrapper>
+      {isOpen && (
+        <div ref={popover}>
+          <HexColorPicker color={color} onChange={onChange} />
+        </div>
+      )}
+    </div>
+  );
+};
 
 const ThemeEditor = ({
   theme,
@@ -159,20 +194,10 @@ const ThemeEditor = ({
       return (
         <InputContainer key={path.join(".") + "." + key}>
           <label>{key}</label>
-          <InputWrapper>
-            <TextInput
-              value={obj[key]}
-              onChange={(e) =>
-                handleColorChange(path.concat(key), e.target.value)
-              }
-            />
-            <ColorInput
-              value={obj[key]}
-              onChange={(e) =>
-                handleColorChange(path.concat(key), e.target.value)
-              }
-            />
-          </InputWrapper>
+          <ColorInputDeferred
+            color={obj[key]}
+            onChange={(color) => handleColorChange(path.concat(key), color)}
+          />
         </InputContainer>
       );
     });
