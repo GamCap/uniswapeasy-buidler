@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import NavBar from "./components/NavBar";
 import SideBar from "./components/SideBar";
-import { ReactNode, useState } from "react";
+import { useState } from "react";
 import {
   UniswapEasy,
   defaultTheme,
@@ -110,7 +110,6 @@ function App() {
   const provider = useActiveProvider();
 
   const [themeColors, setThemeColors] = useState<Colors>(orangeDark);
-  const [initialTheme, setInitialTheme] = useState<OriginalName>("orangeDark");
   const [isCodeBlockOpen, setIsCodeBlockOpen] = useState(false);
   const themes: { name: string; theme: Colors; originalName: OriginalName }[] =
     [
@@ -119,10 +118,6 @@ function App() {
       { name: "Teal Dark", theme: tealDark, originalName: "tealDark" },
       { name: "Teal Light", theme: tealLight, originalName: "tealLight" },
     ];
-  const handleSetInitialTheme = (theme: Colors, originalName: OriginalName) => {
-    setInitialTheme(originalName);
-    setThemeColors(theme);
-  };
 
   return (
     <AppContainer>
@@ -173,7 +168,6 @@ function App() {
           openCodeBlock={() => setIsCodeBlockOpen(true)}
           theme={themeColors}
           themeList={themes}
-          setInitialTheme={handleSetInitialTheme}
           setTheme={setThemeColors}
         />
         <WidgetContainer>

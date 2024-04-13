@@ -1,13 +1,7 @@
 import { ReactNode, useCallback, useRef, useState } from "react";
 import { HexColorPicker, HexColorInput } from "react-colorful";
 import styled from "styled-components";
-import {
-  Colors,
-  tealDark,
-  orangeDark,
-  tealLight,
-  orangeLight,
-} from "uniswapeasy";
+import { Colors } from "uniswapeasy";
 import useClickOutside from "./useClickOutside";
 import { OriginalName } from "../../App";
 
@@ -261,10 +255,10 @@ const ThemeSelector = ({
 }: {
   theme: Colors;
   themeList: { name: string; theme: Colors; originalName: OriginalName }[];
-  setTheme: (theme: Colors, originalName: OriginalName) => void;
+  setTheme: (theme: Colors) => void;
 }) => {
-  const handleThemeChange = (newTheme: Colors, originalName: OriginalName) => {
-    setTheme(newTheme, originalName);
+  const handleThemeChange = (newTheme: Colors) => {
+    setTheme(newTheme);
   };
 
   return (
@@ -285,10 +279,7 @@ const ThemeSelector = ({
       </label>
       <StyledSelect
         onChange={(e) =>
-          handleThemeChange(
-            themeList[parseInt(e.target.value)].theme,
-            themeList[parseInt(e.target.value)].originalName
-          )
+          handleThemeChange(themeList[parseInt(e.target.value)].theme)
         }
       >
         {themeList.map((t, i) => (
@@ -305,14 +296,12 @@ const SideBar = ({
   isOpen,
   openCodeBlock,
   themeList,
-  setInitialTheme,
   theme,
   setTheme,
 }: {
   isOpen: boolean;
   openCodeBlock: () => void;
   themeList: { name: string; theme: Colors; originalName: OriginalName }[];
-  setInitialTheme: (theme: Colors, originalName: OriginalName) => void;
   theme: Colors;
   setTheme: (theme: Colors) => void;
 }) => {
@@ -322,7 +311,7 @@ const SideBar = ({
         <ThemeSelector
           theme={theme}
           themeList={themeList}
-          setTheme={setInitialTheme}
+          setTheme={setTheme}
         />
         <ThemeEditor theme={theme} setTheme={setTheme} />
       </ScrollableArea>
