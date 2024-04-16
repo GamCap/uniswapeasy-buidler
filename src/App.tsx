@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import NavBar from "./components/NavBar";
 import SideBar from "./components/SideBar";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   UniswapEasy,
   defaultTheme,
@@ -12,9 +12,49 @@ import {
   tealLight,
 } from "uniswapeasy";
 import { poolKeys, hookInfos, currencyIconMap } from "./constants";
-import { useActiveProvider } from "./connectors";
 import Modal from "./components/Modal";
 import { CopyBlock, dracula } from "react-code-blocks";
+
+import {
+  createWeb3Modal,
+  defaultConfig,
+  useWeb3ModalProvider,
+} from "@web3modal/ethers5/react";
+import { Web3Provider } from "@ethersproject/providers";
+
+// 1. Get projectId
+const projectId = "c6c9bacd35afa3eb9e6cccf6d8464395";
+
+// 2. Set chains
+const sepolia = {
+  chainId: 11155111,
+  name: "Ethereum Sepolia",
+  currency: "ETH",
+  explorerUrl: "https://sepolia.etherscan.io",
+  rpcUrl: "https://sepolia.drpc.org",
+};
+
+// 3. Create a metadata object
+const metadata = {
+  name: "UniswapEasy",
+  description: "UniswapEasy Widget Builder",
+  url: "https://mywebsite.com", // origin must match your domain & subdomain
+  icons: ["https://avatars.mywebsite.com/"],
+};
+
+// 4. Create Ethers config
+const ethersConfig = defaultConfig({
+  /*Required*/
+  metadata,
+});
+
+// 5. Create a Web3Modal instance
+createWeb3Modal({
+  ethersConfig,
+  chains: [sepolia],
+  projectId,
+  enableAnalytics: false, // Optional - defaults to your Cloud configuration
+});
 
 const AppContainer = styled.div`
   display: flex;
@@ -107,7 +147,14 @@ export type OriginalName =
 
 function App() {
   const [isOpen, setIsOpen] = useState(true);
-  const provider = useActiveProvider();
+
+  const { walletProvider: provider } = useWeb3ModalProvider();
+  const parsedProvider = useMemo(() => {
+    if (provider) {
+      return new Web3Provider(provider);
+    }
+    return undefined;
+  }, [provider]);
 
   const [themeColors, setThemeColors] = useState<Colors>(orangeDark);
   const [isCodeBlockOpen, setIsCodeBlockOpen] = useState(false);
@@ -180,7 +227,7 @@ function App() {
                 ...defaultTheme,
                 ...themeColors,
               }}
-              provider={provider}
+              provider={parsedProvider}
               poolInfos={poolKeys}
               hookInfos={hookInfos}
               currencyIconMap={currencyIconMap}

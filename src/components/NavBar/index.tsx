@@ -1,4 +1,3 @@
-import Web3Connectors from "../Web3Connector";
 import styled from "styled-components";
 import { useTheme } from "../../theme";
 
@@ -123,7 +122,7 @@ const NavBar: React.FC = () => {
           alignItems: "center",
         }}
       >
-        <Web3Connectors />
+        <w3m-button />
         <ButtonContainer
           title={
             colorMode === "dark" ? "Activate light mode" : "Activate dark mode"
