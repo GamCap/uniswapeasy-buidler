@@ -17254,9 +17254,9 @@ unique-string@^2.0.0:
   dependencies:
     crypto-random-string "^2.0.0"
 
-uniswapeasy@./src/library/uniswapeasy-v0.0.246.tgz:
-  version "0.0.246"
-  resolved "./src/library/uniswapeasy-v0.0.246.tgz#3ed1a2a2a2a2fecc8ea30fb589743093220f4aeb"
+uniswapeasy@./src/library/uniswapeasy-v0.0.248.tgz:
+  version "0.0.248"
+  resolved "./src/library/uniswapeasy-v0.0.248.tgz#f577c421dc402315bbfb797ee1e9cef4668820ed"
   dependencies:
     "@reduxjs/toolkit" "^1.6.1"
     "@rollup/plugin-alias" "^5.0.1"
