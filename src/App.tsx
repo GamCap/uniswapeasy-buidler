@@ -151,7 +151,7 @@ function App() {
   const { walletProvider: provider } = useWeb3ModalProvider();
   const parsedProvider = useMemo(() => {
     if (provider) {
-      return new Web3Provider(provider);
+      return new Web3Provider(provider, "any");
     }
     return undefined;
   }, [provider]);
