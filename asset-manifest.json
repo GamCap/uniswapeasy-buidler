@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.js": "/uniswapeasy-buidler/static/js/main.27d3e673.js",
+    "main.js": "/uniswapeasy-buidler/static/js/main.9f1c8503.js",
     "static/js/7171.c9a37ced.chunk.js": "/uniswapeasy-buidler/static/js/7171.c9a37ced.chunk.js",
     "react-syntax-highlighter/refractor-core-import.js": "/uniswapeasy-buidler/static/js/react-syntax-highlighter/refractor-core-import.e042bb8f.chunk.js",
     "react-syntax-highlighter_languages_refractor_abap.js": "/uniswapeasy-buidler/static/js/react-syntax-highlighter_languages_refractor_abap.8b1adc7e.chunk.js",
@@ -283,7 +283,7 @@
     "static/js/9923.6b00e202.chunk.js": "/uniswapeasy-buidler/static/js/9923.6b00e202.chunk.js",
     "static/js/6429.3b0a10cf.chunk.js": "/uniswapeasy-buidler/static/js/6429.3b0a10cf.chunk.js",
     "index.html": "/uniswapeasy-buidler/index.html",
-    "main.27d3e673.js.map": "/uniswapeasy-buidler/static/js/main.27d3e673.js.map",
+    "main.9f1c8503.js.map": "/uniswapeasy-buidler/static/js/main.9f1c8503.js.map",
     "7171.c9a37ced.chunk.js.map": "/uniswapeasy-buidler/static/js/7171.c9a37ced.chunk.js.map",
     "refractor-core-import.e042bb8f.chunk.js.map": "/uniswapeasy-buidler/static/js/react-syntax-highlighter/refractor-core-import.e042bb8f.chunk.js.map",
     "react-syntax-highlighter_languages_refractor_abap.8b1adc7e.chunk.js.map": "/uniswapeasy-buidler/static/js/react-syntax-highlighter_languages_refractor_abap.8b1adc7e.chunk.js.map",
@@ -567,6 +567,6 @@
     "6429.3b0a10cf.chunk.js.map": "/uniswapeasy-buidler/static/js/6429.3b0a10cf.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.27d3e673.js"
+    "static/js/main.9f1c8503.js"
   ]
 }
