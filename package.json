@@ -19,7 +19,7 @@
     "redux-persist": "^6.0.0",
     "styled-components": "^6.1.1",
     "typescript": "^4.9.5",
-    "uniswapeasy": "./src/library/uniswapeasy-v0.0.272.tgz"
+    "uniswapeasy": "./src/library/uniswapeasy-v0.0.278.tgz"
   },
   "scripts": {
     "start": "react-scripts start",
